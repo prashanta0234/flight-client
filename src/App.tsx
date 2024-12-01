@@ -1,26 +1,20 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import Layout from "./components/shared/Layout";
+import Layout from "./components/layouts/Layout";
+import Hero from "./components/home/Hero";
+
+import HomeSearch from "./components/home/HomeSearch";
+import Favorite from "./components/home/Favorite";
 
 function App() {
 	return (
 		<Layout>
-			<div className="App">
-				<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<p>
-						Edit <code>src/App.tsx</code> and save to reload.
-					</p>
-					<a
-						className="App-link"
-						href="https://reactjs.org"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						Learn React
-					</a>
-				</header>
+			<div>
+				<Hero />
+				<div className="flex w-full justify-center bg-transparent mt-[-50px] mb-10">
+					<HomeSearch />
+				</div>
+				<Favorite />
 			</div>
 		</Layout>
 	);

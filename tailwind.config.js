@@ -1,6 +1,8 @@
+const flowbite = require("flowbite-react/tailwind");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: ["./src/**/*.{js,jsx,ts,tsx}"],
+	content: ["./src/**/*.{js,jsx,ts,tsx}", flowbite.content()],
 	theme: {
 		container: {
 			center: true,
@@ -20,6 +22,7 @@ module.exports = {
 				lg: "0.5rem",
 				md: "0.375rem",
 				sm: "0.125rem",
+				full: "1rem",
 			},
 			keyframes: {
 				"accordion-down": {
@@ -45,5 +48,5 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [flowbite.plugin()],
 };

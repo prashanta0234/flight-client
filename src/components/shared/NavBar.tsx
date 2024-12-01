@@ -1,25 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../ui/Button";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+	const [isScrolled, setIsScrolled] = useState(false);
 
 	const toggleSidebar = () => {
 		setIsSidebarOpen(!isSidebarOpen);
 	};
 
+	useEffect(() => {
+		const handleScroll = () => {
+			if (window.scrollY > 50) {
+				setIsScrolled(true);
+			} else {
+				setIsScrolled(false);
+			}
+		};
+
+		window.addEventListener("scroll", handleScroll);
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, []);
+
 	return (
-		<div className="h-14 flex items-center justify-between px-4 bg-primary">
-			<div className="font-bold text-xl">LOGO</div>
+		<div
+			className={`h-14 flex items-center justify-between px-4  ${
+				isScrolled
+					? "bg-white sticky top-0 shadow-md z-40"
+					: "bg-transparent sticky top-0 z-50"
+			} transition-all duration-300 ease-in-out `}
+		>
+			<div className="font-bold text-2xl z-40">
+				<Link to="/">LOGO</Link>
+			</div>
 
 			{/* Desktop Navigation */}
 			<ul className="hidden md:flex gap-6">
 				<li className="font-medium inline-flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:text-secondary duration-300">
-					Home
+					<Link to="/">Home</Link>
 				</li>
 				<li className="font-medium inline-flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:text-secondary duration-300">
-					Flights
+					<Link to="/flights"> Flights</Link>
 				</li>
 				<li className="font-medium inline-flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:text-secondary duration-300">
 					About us
@@ -29,13 +55,11 @@ const NavBar = () => {
 				</li>
 			</ul>
 
-			{/* Login Button */}
-			<div className="hidden md:block">
+			<div className="hidden md:block z-40">
 				<Button className="rounded-md">Login</Button>
 			</div>
 
-			{/* Mobile Bar Icon */}
-			<div className="md:hidden flex items-center">
+			<div className="md:hidden flex items-center z-40">
 				<button onClick={toggleSidebar}>
 					{isSidebarOpen ? (
 						<AiOutlineClose size={24} className="text-secondary" />
@@ -57,8 +81,12 @@ const NavBar = () => {
 					</button>
 				</div>
 				<ul className="flex flex-col gap-6 p-4">
-					<li className="font-medium hover:text-secondary">Home</li>
-					<li className="font-medium hover:text-secondary">Flights</li>
+					<li className="font-medium hover:text-secondary">
+						<Link to="/">Home</Link>
+					</li>
+					<li className="font-medium hover:text-secondary">
+						<Link to="/flights"> Flights</Link>
+					</li>
 					<li className="font-medium hover:text-secondary">About us</li>
 					<li className="font-medium hover:text-secondary">Contact</li>
 				</ul>
