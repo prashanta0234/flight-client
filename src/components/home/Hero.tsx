@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "../shared/NavBar";
-import Button from "../ui/Button";
+import Button from "../shared/Button";
 import { Link } from "react-router-dom";
 
 const Hero = () => {

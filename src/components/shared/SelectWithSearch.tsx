@@ -1,10 +1,15 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 interface SearchableSelectProps {
 	options: string[];
+	setdata: (value: string) => void;
 }
 
-const SearchableSelect: React.FC<SearchableSelectProps> = ({ options }) => {
+const SearchableSelect: React.FC<SearchableSelectProps> = ({
+	options,
+	setdata,
+}) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [search, setSearch] = useState<string>("");
 	const [selectedOption, setSelectedOption] = useState<string>("");
@@ -12,6 +17,11 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({ options }) => {
 	const filteredOptions = options.filter((option) =>
 		option.toLowerCase().includes(search.toLowerCase())
 	);
+
+	const handleSelect = (data: string) => {
+		setSelectedOption(data);
+		setdata(data);
+	};
 
 	return (
 		<div className="relative w-full ">
@@ -37,7 +47,7 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({ options }) => {
 								<li
 									key={index}
 									onClick={() => {
-										setSelectedOption(option);
+										handleSelect(option);
 										setIsOpen(false);
 										setSearch("");
 									}}

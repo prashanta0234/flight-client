@@ -1,9 +1,9 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import { Spinner } from "flowbite-react";
 import LayoutV2 from "../components/layouts/LayoutV2";
+import Loader from "../components/shared/Loader";
 
-const App = lazy(() => import("../App"));
+const App = lazy(() => import("../pages/App"));
 const Flights = lazy(() => import("../pages/Flights"));
 
 const router = createBrowserRouter([
@@ -21,13 +21,7 @@ const router = createBrowserRouter([
 
 export function Router() {
 	return (
-		<Suspense
-			fallback={
-				<div className="flex h-screen w-full items-center justify-center bg-primary-50">
-					<Spinner aria-label="Extra large spinner example" size="xl" />
-				</div>
-			}
-		>
+		<Suspense fallback={<Loader />}>
 			<RouterProvider router={router} />
 		</Suspense>
 	);
