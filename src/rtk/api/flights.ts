@@ -15,7 +15,7 @@ export const flightsApi = createApi({
 			transformResponse: (response: { data: { flights: Flight[] } }) =>
 				response.data.flights,
 		}),
-		getFlight: builder.query<FlightData, Record<string, any>>({
+		getFlight: builder.query<FlightData, string>({
 			query: (id) => {
 				return `/flights/${id}`;
 			},
