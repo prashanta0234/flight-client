@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type FilterState = {
 	origin: string;
 	destination: string;
-	date: Date | null; // Correct type
+	date: Date | null;
 };
 
 const initialState: FilterState = {
 	origin: "",
 	destination: "",
-	date: null, // Default value
+	date: null,
 };
 
 const filterSlice = createSlice({

@@ -7,7 +7,7 @@ const LayoutV2 = () => {
 	return (
 		<div>
 			<NavBar />
-			<div className="min-h-[90vh] container">
+			<div className="min-h-[90vh] container my-8">
 				<Outlet />
 			</div>
 			<Footer />

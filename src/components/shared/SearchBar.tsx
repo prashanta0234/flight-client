@@ -4,13 +4,7 @@ import SearchableSelect from "./SelectWithSearch";
 import { countries } from "../../utils/countriesData";
 import { Datepicker } from "flowbite-react";
 import Button from "./Button";
-import { useDispatch } from "react-redux";
-import {
-	setDate,
-	setDestination,
-	setOrigin,
-} from "../../rtk/slices/filterSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, createSearchParams } from "react-router-dom";
 
 type FormData = {
 	origin: string;
@@ -19,30 +13,36 @@ type FormData = {
 };
 
 const SearchBar = () => {
-	const dispatch = useDispatch();
-
-	const { control, handleSubmit, register } = useForm<FormData>({
+	const { control, handleSubmit } = useForm<FormData>({
 		defaultValues: {
 			origin: "",
 			destination: "",
 			date: null,
 		},
 	});
-	let navigate = useNavigate();
+
+	const navigate = useNavigate();
 
 	const onSubmit = (data: FormData) => {
-		dispatch(setOrigin(data.origin));
-		dispatch(setDestination(data.destination));
+		const formattedDate =
+			data.date instanceof Date ? data.date.toISOString().split("T")[0] : "";
 
-		dispatch(setDate(data.date));
+		const searchParams = createSearchParams({
+			origin: data.origin,
+			destination: data.destination,
+			date: formattedDate,
+		});
 
-		navigate("/flights");
+		navigate({
+			pathname: "/flights",
+			search: `?${searchParams.toString()}`,
+		});
 	};
 
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
-			className="p-4 rounded-md w-full  shadow-lg bg-gray-50 flex flex-col gap-4 justify-center items-center min-h-[150px]"
+			className="p-4 rounded-md w-full shadow-lg bg-gray-50 flex flex-col gap-4 justify-center items-center min-h-[150px]"
 		>
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
 				<div className="flex flex-col gap-2">

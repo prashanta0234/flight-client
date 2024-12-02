@@ -5,6 +5,7 @@ import Loader from "../components/shared/Loader";
 
 const App = lazy(() => import("../pages/App"));
 const Flights = lazy(() => import("../pages/Flights"));
+const FlightDetails = lazy(() => import("../pages/FlightDetails"));
 
 const router = createBrowserRouter([
 	{
@@ -14,7 +15,10 @@ const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <LayoutV2 />,
-		children: [{ path: "/flights", element: <Flights /> }],
+		children: [
+			{ path: "/flights", element: <Flights /> },
+			{ path: "/flights/:id", element: <FlightDetails /> },
+		],
 	},
 	// { path: "/flights", element: <Flights /> },
 ]);

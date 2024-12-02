@@ -1,4 +1,4 @@
-import { Flight } from "../../types/flightsTypes";
+import { Flight, FlightData } from "../../types/flightsTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const flightsApi = createApi({
@@ -15,7 +15,13 @@ export const flightsApi = createApi({
 			transformResponse: (response: { data: { flights: Flight[] } }) =>
 				response.data.flights,
 		}),
+		getFlight: builder.query<FlightData, Record<string, any>>({
+			query: (id) => {
+				return `/flights/${id}`;
+			},
+			transformResponse: (response: { data: FlightData }) => response.data,
+		}),
 	}),
 });
 
-export const { useGetFlightsQuery } = flightsApi;
+export const { useGetFlightsQuery, useGetFlightQuery } = flightsApi;
