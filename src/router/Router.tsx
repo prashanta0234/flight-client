@@ -6,6 +6,8 @@ import Loader from "../components/shared/Loader";
 const App = lazy(() => import("../pages/App"));
 const Flights = lazy(() => import("../pages/Flights"));
 const FlightDetails = lazy(() => import("../pages/FlightDetails"));
+const RegistrationForm = lazy(() => import("../pages/Registration"));
+const Login = lazy(() => import("../pages/Login"));
 
 const router = createBrowserRouter([
 	{
@@ -18,6 +20,8 @@ const router = createBrowserRouter([
 		children: [
 			{ path: "/flights", element: <Flights /> },
 			{ path: "/flights/:id", element: <FlightDetails /> },
+			{ path: "/registration", element: <RegistrationForm /> },
+			{ path: "/login", element: <Login /> },
 		],
 	},
 	// { path: "/flights", element: <Flights /> },

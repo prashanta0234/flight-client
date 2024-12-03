@@ -2,14 +2,25 @@ import React, { useState, useEffect } from "react";
 import Button from "./Button";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../rtk/slices/userLogin";
+import { useSelector } from "react-redux";
+import { RxAvatar } from "react-icons/rx";
+import { Avatar, Dropdown } from "flowbite-react";
 
 const NavBar = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const dispatch = useDispatch();
 
 	const toggleSidebar = () => {
 		setIsSidebarOpen(!isSidebarOpen);
 	};
+	const { token } = useSelector((state: any) => state.userLoginToken);
+
+	console.log(token);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -22,10 +33,17 @@ const NavBar = () => {
 
 		window.addEventListener("scroll", handleScroll);
 
+		const userData = Cookies.get("user-token");
+		if (userData) {
+			dispatch(setToken(userData));
+
+			setIsLoggedIn(true);
+		}
+
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
 		};
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<div
@@ -56,10 +74,43 @@ const NavBar = () => {
 			</ul>
 
 			<div className="hidden md:block z-40">
-				<Button className="rounded-md">Login</Button>
+				{token ? (
+					<div className="flex items-center">
+						<Dropdown
+							label={<Avatar alt="User settings" rounded className="w-8 h-8" />}
+							arrowIcon={false}
+							inline
+						>
+							<Dropdown.Item>Dashboard</Dropdown.Item>
+							<Dropdown.Item>Settings</Dropdown.Item>
+							<Dropdown.Item>Earnings</Dropdown.Item>
+							<Dropdown.Divider />
+							<Dropdown.Item>Sign out</Dropdown.Item>
+						</Dropdown>
+					</div>
+				) : (
+					<Link to={"/login"}>
+						<Button className="rounded-md">Login</Button>
+					</Link>
+				)}
 			</div>
 
-			<div className="md:hidden flex items-center z-40">
+			<div className="md:hidden flex items-center z-40 gap-8">
+				{token && (
+					<div className="flex items-center md:hidden">
+						<Dropdown
+							label={<Avatar alt="User settings" rounded className="w-8 h-8" />}
+							arrowIcon={false}
+							inline
+						>
+							<Dropdown.Item>Dashboard</Dropdown.Item>
+							<Dropdown.Item>Settings</Dropdown.Item>
+							<Dropdown.Item>Earnings</Dropdown.Item>
+							<Dropdown.Divider />
+							<Dropdown.Item>Sign out</Dropdown.Item>
+						</Dropdown>
+					</div>
+				)}
 				<button onClick={toggleSidebar}>
 					{isSidebarOpen ? (
 						<AiOutlineClose size={24} className="text-secondary" />
@@ -91,7 +142,9 @@ const NavBar = () => {
 					<li className="font-medium hover:text-secondary">Contact</li>
 				</ul>
 				<div className="p-4">
-					<Button className="w-full rounded-md">Login</Button>
+					<Link to={"/login"}>
+						<Button className="w-full rounded-md">Login</Button>
+					</Link>
 				</div>
 			</div>
 		</div>
