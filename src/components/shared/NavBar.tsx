@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Button from "./Button";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
-import { setToken } from "../../rtk/slices/userLogin";
+import { clearToken, setToken } from "../../rtk/slices/userLogin";
 import { useSelector } from "react-redux";
-import { RxAvatar } from "react-icons/rx";
 import { Avatar, Dropdown } from "flowbite-react";
 
 const NavBar = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const toggleSidebar = () => {
 		setIsSidebarOpen(!isSidebarOpen);
 	};
 	const { token } = useSelector((state: any) => state.userLoginToken);
-
-	console.log(token);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -36,14 +33,19 @@ const NavBar = () => {
 		const userData = Cookies.get("user-token");
 		if (userData) {
 			dispatch(setToken(userData));
-
-			setIsLoggedIn(true);
 		}
 
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
 		};
 	}, [dispatch]);
+
+	const handleSignOut = () => {
+		console.log("press");
+		Cookies.remove("user-token");
+		dispatch(clearToken());
+		navigate("/");
+	};
 
 	return (
 		<div
@@ -62,9 +64,7 @@ const NavBar = () => {
 				<li className="font-medium inline-flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:text-secondary duration-300">
 					<Link to="/">Home</Link>
 				</li>
-				<li className="font-medium inline-flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:text-secondary duration-300">
-					<Link to="/flights"> Flights</Link>
-				</li>
+
 				<li className="font-medium inline-flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:text-secondary duration-300">
 					About us
 				</li>
@@ -72,6 +72,7 @@ const NavBar = () => {
 					Contact
 				</li>
 			</ul>
+			{/* desktop avatar */}
 
 			<div className="hidden md:block z-40">
 				{token ? (
@@ -82,10 +83,12 @@ const NavBar = () => {
 							inline
 						>
 							<Dropdown.Item>Dashboard</Dropdown.Item>
-							<Dropdown.Item>Settings</Dropdown.Item>
-							<Dropdown.Item>Earnings</Dropdown.Item>
+							<Link to={"/user/booking"}>
+								<Dropdown.Item>Your Flights</Dropdown.Item>
+							</Link>
+
 							<Dropdown.Divider />
-							<Dropdown.Item>Sign out</Dropdown.Item>
+							<Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
 						</Dropdown>
 					</div>
 				) : (
@@ -94,7 +97,7 @@ const NavBar = () => {
 					</Link>
 				)}
 			</div>
-
+			{/* mobile avatar */}
 			<div className="md:hidden flex items-center z-40 gap-8">
 				{token && (
 					<div className="flex items-center md:hidden">
@@ -104,10 +107,11 @@ const NavBar = () => {
 							inline
 						>
 							<Dropdown.Item>Dashboard</Dropdown.Item>
-							<Dropdown.Item>Settings</Dropdown.Item>
-							<Dropdown.Item>Earnings</Dropdown.Item>
+							<Link to={"/user/booking"}>
+								<Dropdown.Item>Your Flights</Dropdown.Item>
+							</Link>
 							<Dropdown.Divider />
-							<Dropdown.Item>Sign out</Dropdown.Item>
+							<Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
 						</Dropdown>
 					</div>
 				)}

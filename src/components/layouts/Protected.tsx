@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 const Protected = () => {
 	const token = Cookies.get("user-token");
 
-	return token ? <Outlet /> : <Navigate to="/signin" />;
+	return token ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default Protected;

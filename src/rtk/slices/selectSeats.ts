@@ -1,12 +1,8 @@
+import { SelectedSeatsState } from "@/types/bookingsTypes";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type SelectedSeatsState = {
-	flightId: string | null;
-	seatIds: string[];
-};
-
 const initialState: SelectedSeatsState = {
-	flightId: null,
+	flightId: undefined,
 	seatIds: [],
 };
 
@@ -29,7 +25,7 @@ const selectedSeatsSlice = createSlice({
 			}
 		},
 		clearSelection: (state) => {
-			state.flightId = null;
+			state.flightId = undefined;
 			state.seatIds = [];
 		},
 	},

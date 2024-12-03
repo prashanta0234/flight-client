@@ -22,7 +22,9 @@ const Button: React.FC<ButtonProps> = ({
 
 	return (
 		<button
-			className={clsx(baseStyles, variants[variant], className)}
+			className={clsx(baseStyles, variants[variant], className, {
+				"opacity-50 cursor-not-allowed": props.disabled,
+			})}
 			{...props}
 		>
 			{children}

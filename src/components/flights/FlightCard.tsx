@@ -19,7 +19,7 @@ const FlightCard = ({ data }: { data: Flight }) => {
 	const navigate = useNavigate();
 
 	const handleReadMore = () => {
-		navigate(`/flights/${_id}`); // Navigate to the specific flight route
+		navigate(`/flights/${_id}`);
 	};
 	return (
 		<div className="w-full">

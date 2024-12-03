@@ -6,6 +6,8 @@ export const flightsApi = createApi({
 	baseQuery: fetchBaseQuery({
 		baseUrl: "https://flight-server-six.vercel.app/api/",
 	}),
+	tagTypes: ["Flight"],
+
 	endpoints: (builder) => ({
 		getFlights: builder.query<Flight[], Record<string, any>>({
 			query: (params) => {
@@ -20,6 +22,7 @@ export const flightsApi = createApi({
 				return `/flights/${id}`;
 			},
 			transformResponse: (response: { data: FlightData }) => response.data,
+			providesTags: ["Flight"],
 		}),
 	}),
 });

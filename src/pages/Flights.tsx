@@ -22,9 +22,6 @@ const Flights = () => {
 			destination,
 		});
 
-	console.log("Query Params:", { date, origin, destination });
-	console.log("Query State:", { isLoading, isFetching, isError, data });
-
 	let content;
 	if (isLoading || isFetching) {
 		content = <Loader />;

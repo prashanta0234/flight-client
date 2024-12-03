@@ -3,14 +3,55 @@ import { useSelector } from "react-redux";
 import Button from "../shared/Button";
 import { Seat } from "@/types/flightsTypes";
 import Seats from "./Seats";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { useBookingMutation } from "../../rtk/api/bookings";
+import Cookies from "js-cookie";
+import { structureError } from "../../utils/structureError";
 
 const SeatsCard = ({ seats, price }: { seats: Seat[]; price: number }) => {
-	const { seatIds } = useSelector((state: any) => state.selectedSeats);
+	const { seatIds, flightId } = useSelector(
+		(state: any) => state.selectedSeats
+	);
+	const [booking, { isLoading, error, data }] = useBookingMutation();
+
+	const navigate = useNavigate();
+
+	const handleBooking = () => {
+		if (seatIds.length === 0) {
+			toast.error("Please select at least one seat.");
+		} else {
+			const token = Cookies.get("user-token");
+
+			if (!token) {
+				toast.error("Please login first");
+				navigate(`/login`);
+			} else {
+				booking({ seatIds, flightId });
+			}
+		}
+	};
+
+	if (!error && data) navigate(`/booking/${flightId}`);
+	if (error) {
+		const e = structureError(error);
+		toast.error(e.message);
+		if ("status" in error) {
+			error.status === 401 && navigate(`/login`);
+		}
+	}
 
 	return (
 		<div>
 			<div className="flex justify-between items-center">
-				<p className="text-lg font-semibold">Seats</p> <Button>Book</Button>
+				<p className="text-lg font-semibold">Seats</p>{" "}
+				{isLoading ? (
+					<Button onClick={handleBooking} disabled>
+						Book
+					</Button>
+				) : (
+					<Button onClick={handleBooking}>Book</Button>
+				)}
 			</div>
 			<div className="flex justify-between mt-4">
 				<div className="flex flex-col gap-2">
@@ -40,7 +81,12 @@ const SeatsCard = ({ seats, price }: { seats: Seat[]; price: number }) => {
 					</div>
 				</div>
 			</div>
-			<Seats seatsData={seats} />
+			<div
+				aria-disabled={isLoading}
+				className={isLoading ? "pointer-events-none opacity-50" : ""}
+			>
+				<Seats seatsData={seats} />
+			</div>
 		</div>
 	);
 };
