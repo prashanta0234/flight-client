@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import LayoutV2 from "../components/layouts/LayoutV2";
 import Loader from "../components/shared/Loader";
 import Protected from "../components/layouts/Protected";
+import NotFound404 from "../pages/404";
 
 const App = lazy(() => import("../pages/App"));
 const Flights = lazy(() => import("../pages/Flights"));
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
 					{ path: "/user/booking", element: <UserFlights /> },
 				],
 			},
+			{ path: "*", element: <NotFound404 /> },
 		],
 	},
 ]);

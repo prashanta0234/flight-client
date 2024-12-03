@@ -24,8 +24,9 @@ const SearchBar = () => {
 	const navigate = useNavigate();
 
 	const onSubmit = (data: FormData) => {
-		const formattedDate =
-			data.date instanceof Date ? data.date.toISOString().split("T")[0] : "";
+		const formattedDate = data.date
+			? data.date.toLocaleDateString("en-CA")
+			: "";
 
 		const searchParams = createSearchParams({
 			origin: data.origin,
@@ -50,8 +51,17 @@ const SearchBar = () => {
 					<Controller
 						name="origin"
 						control={control}
-						render={({ field }) => (
-							<SearchableSelect options={countries} setdata={field.onChange} />
+						rules={{ required: "Origin is required" }}
+						render={({ field, fieldState: { error } }) => (
+							<>
+								<SearchableSelect
+									options={countries}
+									setdata={field.onChange}
+								/>
+								{error && (
+									<p className="text-red-500 text-sm">{error.message}</p>
+								)}
+							</>
 						)}
 					/>
 				</div>
@@ -60,8 +70,17 @@ const SearchBar = () => {
 					<Controller
 						name="destination"
 						control={control}
-						render={({ field }) => (
-							<SearchableSelect options={countries} setdata={field.onChange} />
+						rules={{ required: "Destination is required" }}
+						render={({ field, fieldState: { error } }) => (
+							<>
+								<SearchableSelect
+									options={countries}
+									setdata={field.onChange}
+								/>
+								{error && (
+									<p className="text-red-500 text-sm">{error.message}</p>
+								)}
+							</>
 						)}
 					/>
 				</div>
@@ -70,15 +89,17 @@ const SearchBar = () => {
 					<Controller
 						name="date"
 						control={control}
-						render={({ field }) => (
-							<Datepicker
-								value={field.value || new Date()}
-								onChange={(date) => {
-									if (date) {
-										field.onChange(date.toISOString().split("T")[0]);
-									}
-								}}
-							/>
+						rules={{ required: "Date is required" }}
+						render={({ field, fieldState: { error } }) => (
+							<>
+								<Datepicker
+									value={field.value}
+									onChange={(date) => field.onChange(date)}
+								/>
+								{error && (
+									<p className="text-red-500 text-sm">{error.message}</p>
+								)}
+							</>
 						)}
 					/>
 				</div>

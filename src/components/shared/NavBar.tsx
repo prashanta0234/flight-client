@@ -41,7 +41,6 @@ const NavBar = () => {
 	}, [dispatch]);
 
 	const handleSignOut = () => {
-		console.log("press");
 		Cookies.remove("user-token");
 		dispatch(clearToken());
 		navigate("/");

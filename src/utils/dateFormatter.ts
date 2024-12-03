@@ -10,6 +10,5 @@ export const dateFormatter = (data: string): string => {
 
 	const formattedDate = date.toLocaleDateString("en-US", options);
 
-	console.log(formattedDate);
 	return formattedDate;
 };

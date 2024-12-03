@@ -28,7 +28,6 @@ const RegistrationForm = () => {
 
 	const [signup, { isLoading, error, data }] = useSignupMutation();
 	const onSubmit = (data: FormData) => {
-		console.log("Registration Data:", data);
 		signup(data);
 	};
 
@@ -38,7 +37,6 @@ const RegistrationForm = () => {
 	}
 
 	if (data) {
-		console.log(data);
 		Cookies.set("user-token", data.token);
 		dispatch(setToken(data.token));
 
